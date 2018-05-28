@@ -2,13 +2,19 @@ from flask import render_template, request, flash, redirect
 from ..app import app
 
 #############################################################################
-#                             PAGE ACCUEIL                                  #
+#                             PAGES ACCUEIL                                  #
 #############################################################################
 @app.route("/")
 def accueil():
     """ Route permettant l'affichage de la page d'accueil
     """
     return render_template("conteneur.html")
+
+@app.route("/a-propos")
+def a_propos():
+    """ Route pour affcher les informations générale sur l'application
+    """
+    return render_template("pages/a_propos.html")
 
 '''
 #############################################################################
