@@ -39,20 +39,31 @@ class Personne(db.Model):
 
 
 ##############################################################################################################
-#                                                   LIEU                                                     #
+#                                              VILLES                                                        #
 ##############################################################################################################
 
-class Lieu(db.Model):
-	__tablename__ = "lieu"
-	lieu_id = db.Column (db.Integer, unique=True, nullable=False, primary_key=True)
-	lieu_ville = db.Column (db.Tinytext)
-	lieu_latville = db.Column (db.Float)
-	lieu_longville = db.Column (db.Float)
-	lieu_pays = db.Column (db.Tinytext)
-	lieu_latpays = db.Column (db.Float)
-	lieu_longpays = db.Column (db.Float)
-	# Jointure
-	lieu_mission = relationship("Mission_Lieu", back_populates="lien_lieu_mission")
+class Ville(db.Model):
+    __tablename__ = "ville"
+    ville_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    ville_intitule = db.Column(db.Tinytext)
+    ville_lat = db.Column(db.Float)
+    ville_long = db.Column(db.Float)
+    # Jointure
+    lieu_mission = db.relationship("Mission_Lieu", back_populates="lien_lieu_mission_ville")
+
+
+##############################################################################################################
+#                                              PAYS                                                          #
+##############################################################################################################
+
+class Pays(db.Model):
+    __tablename__ = "pays"
+    pays_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    pays_intitule = db.Column(db.Tinytext)
+    pays_lat = db.Column(db.Float)
+    pays_long = db.Column(db.Float)
+    # Jointure
+    lieu_mission = db.relationship("Mission_Lieu", back_populates="lien_lieu_mission_pays")
 
 
 ##############################################################################################################
@@ -71,7 +82,8 @@ class Mission(db.Model):
 	mission_precision = db.Column(db.Text)
 	# Jointures
 	mission_personne = relationship("Personne_Mission", back_populates="lien_mission_personne")
-	mission_lieu = relationship("Mission_Lieu", back_populates="lien_mission_lieu")
+	mission_lieu1 = db.relationship("Mission_Lieu", back_populates="lien_mission_lieu_ville")
+    mission_lieu2 = db.relationship("Mission_Lieu", back_populates="lien_mission_lieu_pays")
 
 
 ##############################################################################################################
@@ -94,7 +106,9 @@ class Mission_Lieu(db.Model):
     __tablename__ = "mission_lieu"
     mission_lieu_id = db.Column(db.Integer, nullable=True, autoincrement=True, primary_key=True)
     mission_lieu_mission_id = db.Column(db.Integer, db.ForeignKey('lieu.mission_id'))
-    mission_lieu_lieu_id = db.Column(db.Integer, db.ForeignKey('lieu.lieu_id'))
-	# Jointures
-    lien_lieu_mission = db.relationship("Lieu", back_populates="lieu_mission")
+    mission_lieu_ville_id = db.Column(db.Integer, db.ForeignKey('lieu.ville_id'))
+    mission_lieu_pays_id = db.Column(db.Integer, db.ForeignKey('lieu.pays_id'))
+    # Jointures
+    lien_lieu_mission_ville = db.relationship("Ville", back_populates="lieu_mission1")
+    lien_lieu_mission_pays = db.relationship("Pays", back_populates="lieu_mission2")
     lien_mission_lieu = db.relationship("Mission", back_populates="mission_personne")
