@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect
 from ..app import app
-
+from ..modeles.donnees import Pays
 #############################################################################
 #                             PAGE ACCUEIL                                  #
 #############################################################################
@@ -10,6 +10,13 @@ def accueil():
     """
     return render_template("conteneur.html")
 
+@app.route("/test_affichage")
+def affichage_pays():
+    """Route permettant l'affichage de tous les pays de la base
+    :return une page html avec une liste"""
+
+    pays = Pays.query.all()
+    return render_template("test_affichage.html", pays=pays)
 '''
 #############################################################################
 #                     PAGES DE CONSULTATION DE LA BASE                      #
