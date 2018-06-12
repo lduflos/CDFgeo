@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect
+from flask import render_template, jsonify, request, flash, redirect
 from ..app import app
 from ..modeles.donnees import Pays
 #############################################################################
@@ -17,6 +17,22 @@ def affichage_pays():
 
     pays = Pays.query.all()
     return render_template("test_affichage.html", pays=pays)
+
+# api
+def Json_404():
+    response = jsonify({"erreur": "la requête a échoué"})
+    response.status_code = 404
+    return response
+
+@app.route("/api/pays/<pays_id>")
+def api_pays(pays_id):
+    try:
+        query = Pays.query.get(pays_id)
+        return jsonify(query.pays_to_json())
+    except:
+        return Json_404()
+
+
 '''
 #############################################################################
 #                     PAGES DE CONSULTATION DE LA BASE                      #

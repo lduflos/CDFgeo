@@ -65,6 +65,15 @@ class Pays(db.Model):
     '''# Jointure
     lieu_mission = db.relationship("Mission_Lieu", back_populates="lien_lieu_mission_pays")'''
 
+    def pays_to_json(self):
+        return {
+            "type": "Pays",
+            "id": self.pays_id,
+            "attributes": {
+                "nom": self.pays_intitule,
+                "longitude": self.pays_long,
+                "latitude": self.pays_lat}
+        }
 
 ##############################################################################################################
 #                                                   MISSION                                                  #
