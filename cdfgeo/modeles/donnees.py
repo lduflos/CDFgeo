@@ -14,8 +14,8 @@ class Chaire(db.Model):
     chaire_debut = db.Column(db.String(4))
     chaire_fin = db.Column(db.String(4))
     chaire_precision = db.Column(db.Text)
-    '''# Jointure
-    chaire_personne = db.relationship("Personne", uselist=False, back_populates="personne_chaire")'''
+    # Jointure
+    chaire_personne = db.relationship("Personne", uselist=False, back_populates="personne_chaire")
 
 
 ##############################################################################################################
@@ -33,9 +33,9 @@ class Personne(db.Model):
     personne_precision = db.Column(db.Text)
     personne_liensexternes = db.Column(db.Text)
     chaire_chaire_id = db.Column(db.Integer, db.ForeignKey('chaire.chaire_id'))
-    '''# Jointures
+    # Jointures
     personne_chaire = db.relationship("Chaire", back_populates="chaire_personne")
-    personne_mission = db.relationship("Personne_Mission", back_populates="lien_personne_mission")'''
+    personne_mission = db.relationship("Personne_Mission", back_populates="lien_personne_mission")
 
 
 ##############################################################################################################
@@ -48,8 +48,8 @@ class Ville(db.Model):
     ville_intitule = db.Column(db.Text)
     ville_lat = db.Column(db.Float)
     ville_long = db.Column(db.Float)
-    '''# Jointure
-    lieu_mission = db.relationship("Mission_Lieu", back_populates="lien_lieu_mission_ville")'''
+    # Jointure
+    lieu_mission = db.relationship("Mission_Lieu", back_populates="lien_lieu_mission_ville")
 
 
 ##############################################################################################################
@@ -89,10 +89,10 @@ class Mission(db.Model):
     mission_date_fin = db.Column(db.String(10))
     mission_dates = db.Column(db.Text)
     mission_precision = db.Column(db.Text)
-    '''# Jointures
+    # Jointures
     mission_personne = db.relationship("Personne_Mission", back_populates="lien_mission_personne")
     mission_lieu1 = db.relationship("Mission_Lieu", back_populates="lien_mission_lieu_ville")
-    mission_lieu2 = db.relationship("Mission_Lieu", back_populates="lien_mission_lieu_pays")'''
+    mission_lieu2 = db.relationship("Mission_Lieu", back_populates="lien_mission_lieu_pays")
 
 
 ##############################################################################################################
@@ -101,11 +101,11 @@ class Mission(db.Model):
 class Personne_Mission(db.Model):
     __tablename__ = "personne_mission"
     personne_mission_id = db.Column(db.Integer, nullable=True, autoincrement=True, primary_key=True)
-    personne_mission_personne_id = db.Column(db.Integer, db.ForeignKey('mission.personne_id'))
-    personne_mission_mission_id = db.Column(db.Integer, db.ForeignKey('personne.mission_id'))
-    '''# Jointures
+    personne_mission_personne_id = db.Column(db.Integer, db.ForeignKey('personne.personne_id'))
+    personne_mission_mission_id = db.Column(db.Integer, db.ForeignKey('mission.mission_id'))
+    # Jointures
     lien_personne_mission = db.relationship("Personne", back_populates="personne_mission")
-    lien_mission_personne = db.relationship("Mission", back_populates="mission_personne")'''
+    lien_mission_personne = db.relationship("Mission", back_populates="mission_personne")
 
 
 ##############################################################################################################
@@ -117,7 +117,7 @@ class Mission_Lieu(db.Model):
     mission_lieu_mission_id = db.Column(db.Integer, db.ForeignKey('lieu.mission_id'))
     mission_lieu_ville_id = db.Column(db.Integer, db.ForeignKey('lieu.ville_id'))
     mission_lieu_pays_id = db.Column(db.Integer, db.ForeignKey('lieu.pays_id'))
-    '''# Jointures
+    # Jointures
     lien_lieu_mission_ville = db.relationship("Ville", back_populates="lieu_mission1")
     lien_lieu_mission_pays = db.relationship("Pays", back_populates="lieu_mission2")
-    lien_mission_lieu = db.relationship("Mission", back_populates="mission_personne")'''
+    lien_mission_lieu = db.relationship("Mission", back_populates="mission_personne")
