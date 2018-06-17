@@ -1,6 +1,6 @@
 from flask import render_template, jsonify, request
 from ..app import app
-from ..modeles.donnees import Pays
+from ..modeles.donnees import Mission
 #############################################################################
 #                             PAGE ACCUEIL                                  #
 #############################################################################
@@ -11,36 +11,13 @@ def accueil():
     return render_template("conteneur.html")
 
 @app.route("/test_affichage")
-def affichage_pays():
-    """Route permettant l'affichage de tous les pays de la base
+def missions():
+    """Route permettant l'affichage de tous les missions de la base
     :return une page html avec une liste"""
 
-    pays = Pays.query.all()
-    return render_template("test_affichage.html", pays=pays)
+    mission = Mission.query.all()
+    return render_template("test_affichage.html", mission=mission)
 
-# api
-def Json_404():
-    response = jsonify({"erreur": "la requête a échoué"})
-    response.status_code = 404
-    return response
-
-@app.route("/api/pays/<pays_id>")
-def api_pays(pays_id):
-        query = Pays.query.get(pays_id)
-        return jsonify(query.pays_to_json())
-    
-
-@app.route("/blop/pays/<pays_id>")
-def _recup_json(pays_id) :
-    try:
-        query = Pays.query.get(pays_id)
-        pays = jsonify(query.pays_to_json())
-        print("bonjour lea")
-        print(pays)
-        return render_template("conteneur.html")
-    except:
-        print("fail")
-        return render_template("conteneur.html")
 
 '''
 #############################################################################

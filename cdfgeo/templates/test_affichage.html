@@ -1,7 +1,10 @@
-<html>
-    <ul>
-    {% for lieu in pays %}
-        <li><a>{{lieu.pays_intitule}}</a></li>
+{% extends "conteneur.html" %}
+
+{% block corps %}
+<h1>Résultats</h1>
+<ul>
+    {% for m in mission %}
+        <li><a>{{m.mission_intitule}}</a></li>
     {% endfor %}
-    </ul>
-</html>
+</ul>
+{% endblock %}

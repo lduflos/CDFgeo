@@ -51,6 +51,17 @@ class Ville(db.Model):
     # Jointure
     missions = db.relationship("Mission_Lieu", back_populates="ville")
 
+    def mission_to_json(self):
+        return {
+            data = {}
+            if self.ville :
+                data["ville_intitule"] = self.ville.ville_intitule,
+                data['{latitude}, {longitude}.format(lat_long)'] = (self.ville.ville_lat, self.ville.ville_long)
+            else :
+                data['{latitude}, {longitude}.format(lat_long)'] = (self.pays.pays_lat, self.pays.pays_long)
+
+            for mission_lieu in self.missions
+            }
 
 ##############################################################################################################
 #                                              PAYS                                                          #
@@ -65,20 +76,6 @@ class Pays(db.Model):
     # Jointure
     missions = db.relationship("Mission_Lieu", back_populates="pays")
 
-    def pays_to_json(self):
-        return {
-            "type": "Pays",
-            "id": self.pays_id,
-            "attributes": {
-                "nom": self.pays_intitule,
-                "longitude": self.pays_long,
-                "latitude": self.pays_lat
-            },
-            "mission": [
-                lieu_mission.mission.mission_intitule
-                for lieu_mission in self.missions
-            ]
-        }
 
 ##############################################################################################################
 #                                                   MISSION                                                  #

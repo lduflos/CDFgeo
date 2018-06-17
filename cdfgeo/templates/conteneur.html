@@ -2,10 +2,10 @@
 	<html lang="fr">
 		<head>
 			<meta charset="UTF-8">
-			<script src="../static/js/jquery.js"></script>
-			<script src="../static/js/popper.js"></script>
-			<script src="../static/js/bootstrap.js"></script>
-            <script src="../static/js/leaflet.js"></script>
+			<script src="./static/js/jquery.js"></script>
+			<script src="./static/js/popper.js"></script>
+			<script src="./static/js/bootstrap.js"></script>
+            <script src="./static/js/leaflet.js"></script>
 			<title>CDFgeo {%block titre %}{%endblock%}</title>
 			{% include "partials/css.html" %}
         	{% include "partials/metadata.html" %}
@@ -36,24 +36,19 @@
 				</div>
 			</nav>
 			<main class="container-expand">
-				<!-- messages flash après une requête-->
-			{% with messages = get_flashed_messages(with_categories=true) %}
-          	{% if messages %}
-	         	<div class="row">
-	            	<div class="col">
-	            		{% for category, message in messages %}
-	            		<div class="alert alert-{{category}}" role="alert">{{ message }}</div>
-	            		{% endfor %}
-	              	</div>
-	          	</div>
-				{% endif %}
-				{% endwith %}
-
-	            	<div id="map" style="height: 595px; width: 1320px">
-	            	{% block corps %}{% endblock %}
-	                </div>
+                <div class="row">
+	            	<div class="col pt-4">
+	            	{% block js %}{% endblock %}
+	            </div>
 	        	</div>
+				<div class="row">
+	            	<div class="col">
+	            	{% block corps %}{% endblock %}
+	            </div>
+	        	</div>
+	            	<div id="map" style="height: 595px; width: 1320px">
+	            	{% block map %}{% endblock %}
+	                </div>
 	        </main>
 		</body>
-        <script src="../static/js/app.js"></script>
 	</html>
