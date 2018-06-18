@@ -12,11 +12,12 @@ def accueil():
 
 @app.route("/test_affichage")
 def missions():
-    """Route permettant l'affichage de tous les missions de la base
+    """Route permettant l'affichage de toutes les missions de la base
     :return une page html avec une liste"""
 
-    mission = Mission.query.all()
-    return render_template("test_affichage.html", mission=mission)
+    lieu = Mission.query.all()
+    mission = lieu.missions()
+    return render_template("test_affichage.html", lieu=lieu, mission=mission)
 
 
 '''
