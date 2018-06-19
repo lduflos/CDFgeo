@@ -1,0 +1,50 @@
+{% extends "conteneur.html" %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Création de la carte à l'id "map"
+        var map = L.map('map');
+        // Centrer la vue avec un zoom de 10
+        map.setView([37.45, 14.15], 10);
+        // Usage des tuiles de carte d'OpenStreetMap puis ajout à la carte map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        $.ajax("{{ url_for("missions")}}").done(function(data, x, z) {
+            // On réserve des variables qui permettront de calculer le centre de la carte à la fin
+            var max_lat = null,
+                min_lat = null,
+                max_long = null,
+                min_long = null;
+            // On boucle sur les clefs
+            for(var mission in data.missions) {
+                // On crée un raccourci vers le dictionnaire de lieu et vers ses longitudes et latitudes
+                var long_lat = mission.latlong;
+
+                {% for  k, v in lieu.items()  %}
+                // Creation du marqueur
+                {% if "ville_intitule" in v %}
+                var {{v["ville_intitule"][:3]}} = L.marker({{v["latlong"][0]}},{{v["latlong"][1]}}).addTo(map);
+                {{v["ville_intitule"][:3]}}.bindPopup("<h2>"+mission.intitule+"</h2><p>");
+                {% else %}
+                var {{v["pays_intitule"][:3]}}= L.marker({{v["latlong"][0]}},{{v["latlong"][1]}}).addTo(map);
+                {{v["pays_intitule"][:3]}}.bindPopup("<h2>"+mission.intitule+"</h2><p>");
+                {% endif %}
+            }
+            {% endfor %}
+            // Création des valeurs de latitudes et longitudes minimales et maximales
+            var min_point = L.latLng([min_lat, min_long]),
+                max_point = L.latLng([max_lat, max_long]),
+                // Création d'une frontiere
+                // http://leafletjs.com/reference-1.3.0.html#latlngbounds
+                frontieres = L.latLngBounds(min_point, max_point);
+            // Centrage sur les frontieres
+            map.fitBounds(frontieres);
+        });
+    });
+ </script>
+{% endblock %}
+{%  block corps %}
+    <h1>{{ lieu.pays_intitule }}</h1>
+{% endblock %}
