@@ -86,17 +86,29 @@ class Mission(db.Model):
     personnes = db.relationship("Personne_Mission", back_populates="mission")
     lieux = db.relationship("Mission_Lieu", back_populates="mission")
 
-    def missions(self):
-        data = dict()
-        lieu = Mission.query.all()
-        for mission in lieu :
-            if self.ville:
-                data["ville_intitule"] = self.ville.ville_intitule,
-                data['{latitude}, {longitude}.format(lat_long)'] = (self.ville.ville_lat, self.ville.ville_long)
+    def missions(self, data):
+        for lieu in self.lieux:
+            if lieu.ville != None:
+                key = str(lieu.ville.ville_lat) +', ' + str(lieu.ville.ville_long)
+                if key not in data:
+                    data[key] = dict()
+                data[key]["ville_intitule"] = lieu.ville.ville_intitule
+                data[key]['mission'] = list()
+                data[key]['mission'].append(self.mission_intitule)
+                data[key]['latlong'] = list()
+                data[key]['latlong'].append([lieu.ville.ville_lat, lieu.ville.ville_long])
             else:
-                data["pays_intitule"] = self.pays.pays_intitule,
-                data['{latitude}, {longitude}.format(lat_long)'] = (self.pays.pays_lat, self.pays.pays_long)
-            return data
+                if lieu.pays != None:
+                    key = str(lieu.pays.pays_lat) +', ' + str(lieu.pays.pays_long)
+                    if key not in data:
+                        data[key] = dict()
+                    data.get(key, dict())
+                    data[key]["pays_intitule"] = lieu.pays.pays_intitule
+                    data[key]['mission'] = list()
+                    data[key]['mission'].append(self.mission_intitule)
+                    data[key]['latlong'] = list()
+                    data[key]['latlong'].append([lieu.pays.pays_lat, lieu.pays.pays_long])
+        return data
 
 
 
