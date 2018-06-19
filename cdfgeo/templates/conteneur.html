@@ -6,6 +6,7 @@
 			<script src="./static/js/popper.js"></script>
 			<script src="./static/js/bootstrap.js"></script>
             <script src="./static/js/leaflet.js"></script>
+			{% block js %}{% endblock %}
 			<title>CDFgeo {%block titre %}{%endblock%}</title>
 			{% include "partials/css.html" %}
         	{% include "partials/metadata.html" %}
@@ -28,27 +29,27 @@
 							<a class="nav-link" href="#">Partage<span class="sr-only">(current)</span></a>
 						</li>
 					</ul>
-                    <form class="form-inline" action="#" method="GET">
-					<form class="form-inline my-2 my-lg-0">
+                    <form class="form-inline my-2 my-lg-0" action="#" method="GET">
 						<input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Recherche">
 						<button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
 					</form>
 				</div>
 			</nav>
 			<main class="container-expand">
-                <div class="row">
-	            	<div class="col pt-4">
-	            	{% block js %}{% endblock %}
-	            </div>
-	        	</div>
-				<div class="row">
-	            	<div class="col">
-	            	{% block corps %}{% endblock %}
-	            </div>
-	        	</div>
-	            	<div id="map" style="height: 595px; width: 1320px">
-	            	{% block map %}{% endblock %}
-	                </div>
+            <!-- messages flash après une requête-->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="row">
+                            <div class="col">
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% block map %}<div id="map" style="height: 595px; width: 1320px"></div>{% endblock %}
+                {% block corps %}{% endblock %}
 	        </main>
 		</body>
 	</html>
