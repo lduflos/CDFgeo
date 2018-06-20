@@ -36,19 +36,8 @@
 				</div>
 			</nav>
 			<main class="container-expand">
-            <!-- messages flash après une requête-->
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        <div class="row">
-                            <div class="col">
-                                {% for category, message in messages %}
-                                <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endwith %}
-                {% block map %}<div id="map" style="height: 595px; width: 1320px"></div>{% endblock %}
+                <div id="map" style="height: 595px; width: 1320px;"></div>
+                {% block map %}{% endblock %}
                 {% block corps %}{% endblock %}
 	        </main>
 		</body>
