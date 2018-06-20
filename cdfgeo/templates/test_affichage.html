@@ -3,7 +3,7 @@
 {% block map %}
 <script>
 	// création de la carte avec l'id 'map'
-	var mymap = L.map('mymap').setView([37.45, 14.15], 4);
+	var mymap = L.map('map').setView([37.45, 14.15], 4);
 
     // utilisation des tuiles de carte d'OpenStreetMap puis ajout à la carte map
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -18,11 +18,11 @@
     // on boucle sur 'ville intitulé'
     {% if "ville_intitule" in v %}
     // si c'est une ville : création d'un point de coordonnées géo, ajout à la carte et création d'un pop-up
-    var {{v["ville_intitule"][:3]}} = L.marker({{v["latlong"][0]}},{{v["latlong"][1]}}).addTo(mymap);
+    var {{v["ville_intitule"][:3]}} = L.marker({{v["latlong"][0]}}{{v["latlong"][1]}}).addTo(mymap);
     {{v["ville_intitule"][:3]}}.bindPopup('<ul>{% for m in v["mission"] %}<li>{{m}}</li>{%endfor%}</ul>').openPopup();
     // sinon, c'est un pays : création d'un point de coordonnées géo, ajout à la carte et création d'un pop-up
     {% else %}
-    var {{v["pays_intitule"][:3]}} = L.marker({{v["latlong"][0]}},{{v["latlong"][1]}}).addTo(mymap);
+    var {{v["pays_intitule"][:3]}} = L.marker({{v["latlong"][0]}}{{v["latlong"][1]}}).addTo(mymap);
     {{v["pays_intitule"][:3]}}.bindPopup('<ul>{% for m in v["mission"] %}<li>{{m}}</li>{%endfor%}</ul>').openPopup();
     {% endif %}
     {% endfor %}
