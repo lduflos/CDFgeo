@@ -92,22 +92,26 @@ class Mission(db.Model):
                 key = str(lieu.ville.ville_lat) +', ' + str(lieu.ville.ville_long)
                 if key not in data:
                     data[key] = dict()
-                data[key]["ville_intitule"] = lieu.ville.ville_intitule
-                data[key]['mission'] = list()
-                data[key]['mission'].append(self.mission_intitule)
-                data[key]['latlong'] = list()
-                data[key]['latlong'].append([lieu.ville.ville_lat, lieu.ville.ville_long])
+                    data[key]["ville_intitule"] = lieu.ville.ville_intitule
+                    data[key]['latlong'] = list()
+                    data[key]['latlong'].append([lieu.ville.ville_lat, lieu.ville.ville_long])
+                    data[key]['mission'] = list()
+                    data[key]['mission'].append(self.mission_intitule)
+                elif key in data:
+                    data[key]['mission'].append(self.mission_intitule)
             else:
                 if lieu.pays != None:
                     key = str(lieu.pays.pays_lat) +', ' + str(lieu.pays.pays_long)
                     if key not in data:
                         data[key] = dict()
-                    data.get(key, dict())
-                    data[key]["pays_intitule"] = lieu.pays.pays_intitule
-                    data[key]['mission'] = list()
-                    data[key]['mission'].append(self.mission_intitule)
-                    data[key]['latlong'] = list()
-                    data[key]['latlong'].append([lieu.pays.pays_lat, lieu.pays.pays_long])
+                        data.get(key, dict())
+                        data[key]["pays_intitule"] = lieu.pays.pays_intitule
+                        data[key]['mission'] = list()
+                        data[key]['mission'].append(self.mission_intitule)
+                        data[key]['latlong'] = list()
+                        data[key]['latlong'].append([lieu.pays.pays_lat, lieu.pays.pays_long])
+                    elif key in data:
+                        data[key]['mission'].append(self.mission_intitule)
         return data
 
 ##############################################################################################################
