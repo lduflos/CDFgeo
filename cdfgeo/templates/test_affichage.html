@@ -2,8 +2,9 @@
 
 {% block map %}
 <script>
+    $(document).ready(function() {
 	// création de la carte avec l'id 'map'
-	var mymap = L.map('map').setView([37.45, 14.15], 4);
+	var mymap = L.map('map').setView([51.505, -0.09], 4);
 
     // utilisation des tuiles de carte d'OpenStreetMap puis ajout à la carte map
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -14,18 +15,56 @@
 		id: 'mapbox.streets'
 	}).addTo(mymap);
 
-    {% for  k, v in lieu.items()  %}
-    // on boucle sur 'ville intitulé'
-    {% if "ville_intitule" in v %}
-    // si c'est une ville : création d'un point de coordonnées géo, ajout à la carte et création d'un pop-up
-    var {{v["ville_intitule"][:3]}} = L.marker({{v["latlong"][0]}}{{v["latlong"][1]}}).addTo(mymap);
-    {{v["ville_intitule"][:3]}}.bindPopup('<ul>{% for m in v["mission"] %}<li>{{m}}</li>{%endfor%}</ul>').openPopup();
-    // sinon, c'est un pays : création d'un point de coordonnées géo, ajout à la carte et création d'un pop-up
-    {% else %}
-    var {{v["pays_intitule"][:3]}} = L.marker({{v["latlong"][0]}}{{v["latlong"][1]}}).addTo(mymap);
-    {{v["pays_intitule"][:3]}}.bindPopup('<ul>{% for m in v["mission"] %}<li>{{m}}</li>{%endfor%}</ul>').openPopup();
-    {% endif %}
-    {% endfor %}
+    $.ajax("{{url_for("missions")}}").done(function(data, x, z) {
+        // On réserve des variables qui permettront de calculer le centre de la carte à la fin
+        var max_lat = null,
+            min_lat = null,
+            max_long = null,
+            min_long = null;
+
+        // Dans le dictionnaire data.missions
+        {% for  k, v in lieu.items()  %}
+
+        // on boucle sur 'ville intitulé'
+        {% if "ville_intitule" in v %}
+
+        {% if "ville_intitule" == "Paris" %}
+        var greenIcon = new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+        var {{v["ville_intitule"][:3]}} = L.marker({{v["latlong"][0]}}{{v["latlong"][1]}}, {icon: greenIcon}).addTo(mymap);
+        {{v["ville_intitule"][:3]}}.bindPopup('<ul>{% for m in v["mission"] %}<li>{{m}}</li>{%endfor%}</ul>').openPopup();
+
+        {% else %}
+        // sinon c'est une autre ville : création d'un point de coordonnées géo, ajout à la carte et création d'un pop-up
+        var {{v["ville_intitule"][:3]}} = L.marker({{v["latlong"][0]}}{{v["latlong"][1]}}).addTo(mymap);
+        {{v["ville_intitule"][:3]}}.bindPopup('<ul>{% for m in v["mission"] %}<li>{{m}}</li>{%endfor%}</ul>').openPopup();
+        {% endif %}
+
+        // sinon, c'est un pays : création d'un point de coordonnées géo, ajout à la carte et création d'un pop-up
+        {% else %}
+        var {{v["pays_intitule"][:3]}} = L.marker({{v["latlong"][0]}}{{v["latlong"][1]}}).addTo(mymap);
+        {{v["pays_intitule"][:3]}}.bindPopup('<ul>{% for m in v["mission"] %}<li>{{m}}</li>{%endfor%}</ul>').openPopup();
+        {% endif %}
+        {% endfor %}
+
+        // Création des valeurs de latitudes et longitudes minimales et maximales
+        var min_point = L.latLng([min_lat, min_long]),
+            max_point = L.latLng([max_lat, max_long]),
+
+        // Création d'une frontiere
+        // http://leafletjs.com/reference-1.3.0.html#latlngbounds
+        frontieres = L.latLngBounds(min_point, max_point);
+
+        // Centrage sur les frontieres
+        map.fitBounds(frontieres);
+        });
+    });
 </script>
 
 {% endblock %}
