@@ -2,7 +2,7 @@ from flask import render_template, jsonify, request
 from ..app import app
 from ..modeles.donnees import Mission
 #############################################################################
-#                             PAGE ACCUEIL                                  #
+#                             PAGES ACCUEIL                                  #
 #############################################################################
 @app.route("/")
 def accueil():
@@ -10,6 +10,12 @@ def accueil():
     """
     return render_template("conteneur.html")
 
+@app.route("/a-propos")
+def a_propos():
+    """ Route pour affcher les informations générale sur l'application
+    """
+    return render_template("pages/a_propos.html")
+  
 @app.route("/test_affichage")
 def missions():
     """
@@ -24,7 +30,6 @@ def missions():
     print(lieu)
 
     return render_template("test_affichage.html", lieu=lieu)
-
 
 '''
 #############################################################################
