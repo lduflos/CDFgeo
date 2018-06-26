@@ -5,12 +5,13 @@
 			<script src="../static/js/jquery.js"></script>
 			<script src="../static/js/popper.js"></script>
 			<script src="../static/js/bootstrap.js"></script>
+            <script src="../static/js/leaflet.js"></script>
 			<title>CDFgeo {%block titre %}{%endblock%}</title>
 			{% include "partials/css.html" %}
         	{% include "partials/metadata.html" %}
 		</head>
 		<body>
-			<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e6e6e6;">
+			<nav class="navbar navbar-expand bg-dark navbar-dark" style="background-color: #e6e6e6;">
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -30,11 +31,11 @@
                     <form class="form-inline" action="#" method="GET">
 					<form class="form-inline my-2 my-lg-0">
 						<input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Recherche">
-						<button class="btn btn-dark my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+						<button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
 					</form>
 				</div>
 			</nav>
-			<main class="container">
+			<main class="container-expand">
 				<!-- messages flash après une requête-->
 			{% with messages = get_flashed_messages(with_categories=true) %}
           	{% if messages %}
@@ -48,11 +49,11 @@
 				{% endif %}
 				{% endwith %}
 
-	        	<div class="row">
-	            	<div class="col pt-4">
+	            	<div id="map" style="height: 595px; width: 1320px">
 	            	{% block corps %}{% endblock %}
 	                </div>
 	        	</div>
 	        </main>
 		</body>
+        <script src="../static/js/app.js"></script>
 	</html>
