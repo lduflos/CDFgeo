@@ -68,7 +68,7 @@ Pour lancer l'application, tapez :
 
 #### Utilisations ultérieures :
 Lancez le terminal depuis le dossier principal et entrez :  
-`source ~/.dcdfgeo/bin/activate`  
+`source ~/.cdfgeo/bin/activate`  
 puis  
 `python3 run.py`  
 
