@@ -66,6 +66,17 @@ class Pays(db.Model):
     # Jointure
     missions = db.relationship("Mission_Lieu", back_populates="pays")
 
+    # methode pour recuperer les pays en json
+    def pays_to_json(self):
+        return {
+            "type": "Pays",
+            "id": self.pays_id,
+            "attributes": {
+                "nom": self.pays_intitule,
+                "longitude": self.pays_long,
+                "latitude": self.pays_lat
+            }
+        }
 
 ##############################################################################################################
 #                                                   MISSION                                                  #
@@ -86,6 +97,7 @@ class Mission(db.Model):
     personnes = db.relationship("Personne_Mission", back_populates="mission")
     lieux = db.relationship("Mission_Lieu", back_populates="mission")
 
+    # methode qui crée un dictionnaire ou les clés sont latlong
     def missions(self, data):
         for lieu in self.lieux:
             if lieu.ville != None:
