@@ -8,7 +8,7 @@ from ..modeles.donnees import Mission, Pays
 def accueil():
     """ Route permettant l'affichage de la page d'accueil
     """
-    return render_template("conteneur.html")
+    return render_template("pages/accueil.html")
 
 @app.route("/a-propos")
 def a_propos():

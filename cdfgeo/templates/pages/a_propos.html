@@ -1,6 +1,7 @@
 {% extends "conteneur.html" %}
 {% block titre %}| A propos{% endblock %}
 {% block corps %}
+<div class="container mb-5">
 <h1 class="mb-3 text-center">CDFgeo</h1>
 <p align="justify">CDFgeo est une application prototype qui a été développée dans le cadre d'un stage de fin d'étude au Collège de France (Chaire de Littérature française moderne et contemporaine). Cet outil cartographique permet la visualisation des déplacements des professeurs du Collège de France entre 1900 et 1950.</p>
 <h2 class="mt-2">Contexte scientifique</h2>
@@ -10,4 +11,5 @@
 <p align="justify">Les données de CDFgeo proviennent du dépouillement des registres d'assemblées des Professeurs (1900-1950) ainsi que des Annuaires du Collège de France (1901-1951). Chaque entité correspond à une mission, une date et peut être associée à un ou plusieurs professeurs. Pour le moment, seules des données test sont disponibles.</p>
 <h2 class="mt-2">Technologies utilisées</h2>
 <p align="justify">Il s'agit d'un prototype permettant, d'explorer et de visualiser un jeu de données réalisé au cours de ce stage. <br> Prototype réalisé à partir de <a href="http://flask.pocoo.org/" target="_blank">Flask</a>, <a href="https://leafletjs.com/" target="_blank">Leaflet</a> et <a href="https://getbootstrap.com/" target="_blank">Boostrap 4</a>, dont le code source est consultable sur <a href="https://github.com/lduflos/CDFgeo" target="_blank">Github</a>.</p>
+</div>
 {% endblock %}
