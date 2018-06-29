@@ -27,7 +27,7 @@ def missions():
     for mission in missions:
         lieu=mission.missions(data)
 
-    return render_template("test_affichage.html", lieu=lieu)
+    return render_template("affichage.html", lieu=lieu)
 
 @app.route("/pays/<pays_id>")
 def _recup_json(pays_id):
