@@ -52,6 +52,7 @@ class Ville(db.Model):
     missions = db.relationship("Mission_Lieu", back_populates="ville")
 
 
+
 ##############################################################################################################
 #                                              PAYS                                                          #
 ##############################################################################################################
@@ -65,6 +66,7 @@ class Pays(db.Model):
     # Jointure
     missions = db.relationship("Mission_Lieu", back_populates="pays")
 
+    # methode qui retourne les informations des pays dans un dictionnaire
     def pays_to_json(self):
         return {
             "type": "Pays",
@@ -75,7 +77,11 @@ class Pays(db.Model):
                 "latitude": self.pays_lat
             },
             "mission": [
-                lieu_mission.mission.mission_intitule
+                {
+                    "intitule": lieu_mission.mission.mission_intitule,
+                    "ville": lieu_mission.pays.pays_intitule,
+                    "latlong": (lieu_mission.pays.pays_lat, lieu_mission.pays.pays_long)
+                }
                 for lieu_mission in self.missions
             ]
         }
@@ -99,6 +105,34 @@ class Mission(db.Model):
     personnes = db.relationship("Personne_Mission", back_populates="mission")
     lieux = db.relationship("Mission_Lieu", back_populates="mission")
 
+    # methode qui crée un dictionnaire ou les clés sont latlong
+    def missions(self, data):
+        for lieu in self.lieux:
+            if lieu.ville != None:
+                key = str(lieu.ville.ville_lat) +', ' + str(lieu.ville.ville_long)
+                if key not in data:
+                    data[key] = dict()
+                    data[key]["ville_intitule"] = lieu.ville.ville_intitule
+                    data[key]['latlong'] = list()
+                    data[key]['latlong'].append([lieu.ville.ville_lat, lieu.ville.ville_long])
+                    data[key]['mission'] = list()
+                    data[key]['mission'].append(self.mission_intitule)
+                elif key in data:
+                    data[key]['mission'].append(self.mission_intitule)
+            else:
+                if lieu.pays != None:
+                    key = str(lieu.pays.pays_lat) +', ' + str(lieu.pays.pays_long)
+                    if key not in data:
+                        data[key] = dict()
+                        data.get(key, dict())
+                        data[key]["pays_intitule"] = lieu.pays.pays_intitule
+                        data[key]['mission'] = list()
+                        data[key]['mission'].append(self.mission_intitule)
+                        data[key]['latlong'] = list()
+                        data[key]['latlong'].append([lieu.pays.pays_lat, lieu.pays.pays_long])
+                    elif key in data:
+                        data[key]['mission'].append(self.mission_intitule)
+        return data
 
 ##############################################################################################################
 #                                                PERSONNE_MISSION                                            #
